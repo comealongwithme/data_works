@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Tree Table</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <script src="./dist/tree-table.js"></script>
+
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0
+        }
+
+        #tree-table {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        td {
+            min-width: 100px;
+            min-height: 100px;
+            margin: 0;
+            padding: 0;
+
+            text-align: center;
+            vertical-align: middle;
+
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tree-table"></div>
+
+    <div style="position: absolute; right: 0; top: 0">
+        <label for="rowIndex">Row Index</label>
+        <input type="number" id="rowIndex" value="1">
+
+        <label for="colIndex">Column Index</label>
+        <input type="number" id="colIndex" value="2">
+
+        <button onclick="addColumn()">Add Column</button>
+        <button onclick="addRow()">Add Row</button>
+    </div>
+
+    <script>
+        require(['index']);
+
+        function getRowIndex() {
+            return parseInt(document.querySelector('#rowIndex').innerText, 10);
+        }
+
+        function getColIndex() {
+            return parseInt(document.querySelector('#colIndex').innerText, 10);
+        }
+
+        function addColumn() { TreeTable.AddColumn(getRowIndex(), getColIndex()); }
+        function addRow() { TreeTable.AddRow(getRowIndex(), getColIndex()); }
+    </script>
+</body>
+
+</html>

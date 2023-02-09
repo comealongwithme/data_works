@@ -1,0 +1,14 @@
+{
+    "name": "@grapecity/tree-table",
+    "version": "0.0.1",
+    "author": "GrapeCity Inc.",
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev": "tsc -w",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "typescript": "^4.8.2"
+    }
+}
