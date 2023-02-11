@@ -46,12 +46,13 @@
 <body>
     <div id="tree-table"></div>
 
-    <div style="position: absolute; right: 0; top: 0">
-        <label for="rowIndex">Row Index</label>
-        <input type="number" id="rowIndex" value="1">
+    <div style="position: absolute; right: 50%; top: 0; transform: translateX(50%); padding: 24px">
 
         <label for="colIndex">Column Index</label>
         <input type="number" id="colIndex" value="2">
+
+        <label for="rowIndex">Row Index</label>
+        <input type="number" id="rowIndex" value="1">
 
         <button onclick="addColumn()">Add Column</button>
         <button onclick="addRow()">Add Row</button>
@@ -61,11 +62,11 @@
         require(['index']);
 
         function getRowIndex() {
-            return parseInt(document.querySelector('#rowIndex').innerText, 10);
+            return parseInt(document.querySelector('#rowIndex').value, 10);
         }
 
         function getColIndex() {
-            return parseInt(document.querySelector('#colIndex').innerText, 10);
+            return parseInt(document.querySelector('#colIndex').value, 10);
         }
 
         function addColumn() { TreeTable.AddColumn(getRowIndex(), getColIndex()); }
