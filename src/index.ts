@@ -36,42 +36,7 @@ const defaultTreeNode: TreeTableNode = {
 	Children: [],
 }
 
-function findNode(table: TreeTable, rowIndex: number, colIndex: number): TreeTableNode | null {
-
-	const traverse = (node: TreeTableNode, row: number, col: number): TreeTableNode | null => {
-		if (row === rowIndex && col === colIndex) {
-			return node;
-		}
-		if (node.Children.length === 0) {
-			return null;
-		}
-		let childCol = col;
-		for (let i = 0; i < node.Children.length; i++) {
-			const child = node.Children[i];
-			const childRow = row + child.VerticalSpan;
-			const result = traverse(child, childRow, childCol);
-			if (result !== null) {
-				return result;
-			}
-			childCol += 1;
-		}
-		return null;
-	};
-
-	let col = 0;
-	for (let i = 0; i < table.Children.length; i++) {
-		const child = table.Children[i];
-		const result = traverse(child, 0, col);
-		if (result !== null) {
-			return result;
-		}
-		col += 1;
-	}
-
-	return null;
-}
-
-function findAndInsertNode(table: TreeTable, rowIndex: number, colIndex: number, newNode: TreeTableNode): boolean {
+const addColumn = (rowIndex: number, colIndex: number) => {
 
 	const traverse = (parent: TreeTableNode | null, node: TreeTableNode, row: number, col: number): [TreeTableNode | null, TreeTableNode, number] | null => {
 		if (row === rowIndex && col === colIndex) {
@@ -94,39 +59,59 @@ function findAndInsertNode(table: TreeTable, rowIndex: number, colIndex: number,
 	};
 
 	let col = 0;
-	for (let i = 0; i < table.Children.length; i++) {
-		const child = table.Children[i];
+	for (let i = 0; i < defaultTreeTable.Children.length; i++) {
+		const child = defaultTreeTable.Children[i];
 		const result = traverse(null, child, 0, col);
 		if (result !== null) {
 			const [parent, node, index] = result;
 			if (parent === null) {
-				table.Children.splice(index + 1, 0, newNode);
+				defaultTreeTable.Children.splice(index + 1, 0, defaultTreeNode);
 			} else {
-				parent.Children.splice(index + 1, 0, newNode);
+				parent.Children.splice(index + 1, 0, defaultTreeNode);
 			}
-			return true;
 		}
 		col += 1;
 	}
-
-	return false;
-}
-
-
-const addColumn = (rowIndex: number, colIndex: number) => {
-
-	console.log(findNode(defaultTreeTable, rowIndex, colIndex)?.Value);
-
-	findAndInsertNode(defaultTreeTable, rowIndex, colIndex, defaultTreeNode);
 
 	renderTreeTable('tree-table', treeTable)
 }
 
 const addRow = (rowIndex: number, colIndex: number) => {
 
-	/**
-	 * Magic is supposed to happen here...
-	 */
+	const traverse = (parent: TreeTableNode | null, node: TreeTableNode, row: number, col: number): [TreeTableNode | null, TreeTableNode, number] | null => {
+		if (row === rowIndex && col === colIndex) {
+			return [parent, node, col];
+		}
+		if (node.Children.length === 0) {
+			return null;
+		}
+		let childCol = col;
+		for (let i = 0; i < node.Children.length; i++) {
+			const child = node.Children[i];
+			const childRow = row + child.VerticalSpan;
+			const result = traverse(node, child, childRow, childCol);
+			if (result !== null) {
+				return result;
+			}
+			childCol += 1;
+		}
+		return null;
+	};
+
+	let col = 0;
+	for (let i = 0; i < defaultTreeTable.Children.length; i++) {
+		const child = defaultTreeTable.Children[i];
+		const result = traverse(null, child, 0, col);
+		if (result !== null) {
+			const [parent, node, index] = result;
+			if (parent === null) {
+				defaultTreeTable.Children.splice(index + 1, 0, defaultTreeNode);
+			} else {
+				node.Children.splice(index + 1, 0, defaultTreeNode);
+			}
+		}
+		col += 1;
+	}
 
 	renderTreeTable('tree-table', treeTable)
 }
